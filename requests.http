@@ -1,0 +1,33 @@
+
+@endpoint = https://fu28m9tkob.execute-api.ap-south-1.amazonaws.com/prod
+@token=eyJraWQiOiJyTCtGRmZCN1VBR2pJeExISytaSUloZVBSQWt6ZTVkajRSQnQ2N0J4b2t3PSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIxYmE5MzliZi1hZTMzLTQxMzAtYWM0Ni0yNjQ1YjM5YTg5YjAiLCJjb2duaXRvOmdyb3VwcyI6WyJhZG1pbnMiXSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLmFwLXNvdXRoLTEuYW1hem9uYXdzLmNvbVwvYXAtc291dGgtMV9iNUhLQTc3YTAiLCJjb2duaXRvOnVzZXJuYW1lIjoicm9oaXQiLCJvcmlnaW5fanRpIjoiOTliODg0NjYtOTY4Mi00YjYxLWJmOWEtZDE4OWU3MDY3MWQwIiwiY29nbml0bzpyb2xlcyI6WyJhcm46YXdzOmlhbTo6OTM0NzYwNTAyNDg3OnJvbGVcL1NwYWNlRmluZGVyLUNvZ25pdG9BZG1pblJvbGU0QzEwRkJBNC04UldNNU5NUUZLQkoiXSwiYXVkIjoiNm5pb2RoOGdvcXI4bWN0bGo2NThzaTJyNSIsImV2ZW50X2lkIjoiMTUyYmY4MWYtMzk0Yy00MjFjLWEwMWEtNzBkYmVjYmY2NTA5IiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE2NDIwNjU3NzYsImV4cCI6MTY0MjA2OTM3NiwiaWF0IjoxNjQyMDY1Nzc2LCJqdGkiOiJhNTZhMjFjMi1jY2Q3LTQ0OWItOWNiMi04ODQ3YzQxOWMzZDUifQ.JukeonZDrMiF8XDSka9R3sN_9LXA5mMLyFLNew1_DF0JupjXBhTZFNz4ee-B8465nDm1swEuwLkTPIMSiXzjOAJuPvqvOXvEl_nMj3r41NlLUOb-BCHV9G0FfWAvgNPg41eCIsg9Lq8OzfjdC200IFzMbu7fOM33pMWpdCYdhsQ5Xd3GWF5NSldlMpwz4ly8dLoZ_ptSaOheVWQPNhJPgCC4z-Ul63NPxeAh-fQtjKvQHusZy6efe1OjpRO4C-J_wESl4vnPX_AnoIu6StNqUF0k47Lun7ktkqbfxRYqz_5C3pu82ehUWhitTCOALARIOh0emNLJNd9mYGjGieQZNQ
+GET {{endpoint}}/hello/
+Authorization: {{token}}
+###
+GET {{endpoint}}/spaces?name
+###
+GET {{endpoint}}/spaces/
+
+###
+POST {{endpoint}}/spaces/
+Content-Type: application/json
+
+{
+    "location": "kolkata",
+    "name": "good location"
+}
+###
+GET {{endpoint}}/spaces?location=Mumbai
+###
+DELETE  {{endpoint}}/spaces?spaceId=5ca1a700-d5d9-4425-ae2b-3391a92b491b
+###
+
+PUT {{endpoint}}/spaces?spaceId=667b37eb-3218-4237-ae98-07f9865d0634
+Content-Type: application/json
+
+{
+    "location": "islampur",
+    "name": "good location"
+}
+
+###

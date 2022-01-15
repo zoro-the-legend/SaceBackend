@@ -1,0 +1,3489 @@
+{
+  "Resources": {
+    "SpaceApi1B373D2B": {
+      "Type": "AWS::ApiGateway::RestApi",
+      "Properties": {
+        "Name": "SpaceApi"
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Resource"
+      }
+    },
+    "SpaceApiCloudWatchRole2811DDE0": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "apigateway.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/CloudWatchRole/Resource"
+      }
+    },
+    "SpaceApiAccount1ADAEF20": {
+      "Type": "AWS::ApiGateway::Account",
+      "Properties": {
+        "CloudWatchRoleArn": {
+          "Fn::GetAtt": [
+            "SpaceApiCloudWatchRole2811DDE0",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "SpaceApi1B373D2B"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Account"
+      }
+    },
+    "SpaceApiDeploymentA2B9E765dc771601322e6c60bc41b5d9d02c6a36": {
+      "Type": "AWS::ApiGateway::Deployment",
+      "Properties": {
+        "RestApiId": {
+          "Ref": "SpaceApi1B373D2B"
+        },
+        "Description": "Automatically created by the RestApi construct"
+      },
+      "DependsOn": [
+        "SpaceApireservationsDELETE1A253DBD",
+        "SpaceApireservationsGET1C010D4D",
+        "SpaceApireservationsOPTIONSCA5D4517",
+        "SpaceApireservationsPOSTFA20A69F",
+        "SpaceApireservationsPUT6C758D78",
+        "SpaceApireservationsB5924C00",
+        "SpaceApispacesDELETEC413A31B",
+        "SpaceApispacesGET6C083CB2",
+        "SpaceApispacesOPTIONS8D15CDB5",
+        "SpaceApispacesPOST1DDB27B3",
+        "SpaceApispacesPUTD4F9CA05",
+        "SpaceApispacesD5EE855F"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Deployment/Resource"
+      }
+    },
+    "SpaceApiDeploymentStageprodBB8A31FE": {
+      "Type": "AWS::ApiGateway::Stage",
+      "Properties": {
+        "RestApiId": {
+          "Ref": "SpaceApi1B373D2B"
+        },
+        "DeploymentId": {
+          "Ref": "SpaceApiDeploymentA2B9E765dc771601322e6c60bc41b5d9d02c6a36"
+        },
+        "StageName": "prod"
+      },
+      "DependsOn": [
+        "SpaceApiAccount1ADAEF20"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/DeploymentStage.prod/Resource"
+      }
+    },
+    "SpaceApispacesD5EE855F": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "SpaceApi1B373D2B",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "spaces",
+        "RestApiId": {
+          "Ref": "SpaceApi1B373D2B"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Default/spaces/Resource"
+      }
+    },
+    "SpaceApispacesOPTIONS8D15CDB5": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "OPTIONS",
+        "ResourceId": {
+          "Ref": "SpaceApispacesD5EE855F"
+        },
+        "RestApiId": {
+          "Ref": "SpaceApi1B373D2B"
+        },
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationResponses": [
+            {
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+              },
+              "StatusCode": "204"
+            }
+          ],
+          "RequestTemplates": {
+            "application/json": "{ statusCode: 200 }"
+          },
+          "Type": "MOCK"
+        },
+        "MethodResponses": [
+          {
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Methods": true
+            },
+            "StatusCode": "204"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Default/spaces/OPTIONS/Resource"
+      }
+    },
+    "SpaceApispacesPOSTApiPermissionSpaceFinderSpaceApi1F575F27POSTspaces96018685": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "SpacesTableCreate125CEC52",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "SpaceApi1B373D2B"
+              },
+              "/",
+              {
+                "Ref": "SpaceApiDeploymentStageprodBB8A31FE"
+              },
+              "/POST/spaces"
+            ]
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Default/spaces/POST/ApiPermission.SpaceFinderSpaceApi1F575F27.POST..spaces"
+      }
+    },
+    "SpaceApispacesPOSTApiPermissionTestSpaceFinderSpaceApi1F575F27POSTspacesF5C0EB30": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "SpacesTableCreate125CEC52",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "SpaceApi1B373D2B"
+              },
+              "/test-invoke-stage/POST/spaces"
+            ]
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Default/spaces/POST/ApiPermission.Test.SpaceFinderSpaceApi1F575F27.POST..spaces"
+      }
+    },
+    "SpaceApispacesPOST1DDB27B3": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "ResourceId": {
+          "Ref": "SpaceApispacesD5EE855F"
+        },
+        "RestApiId": {
+          "Ref": "SpaceApi1B373D2B"
+        },
+        "AuthorizationType": "COGNITO_USER_POOLS",
+        "AuthorizerId": {
+          "Ref": "SpaceUserAuthorizer401AE1AA"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "SpacesTableCreate125CEC52",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Default/spaces/POST/Resource"
+      }
+    },
+    "SpaceApispacesGETApiPermissionSpaceFinderSpaceApi1F575F27GETspacesE64E6796": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "SpacesTableReadC88C4D14",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "SpaceApi1B373D2B"
+              },
+              "/",
+              {
+                "Ref": "SpaceApiDeploymentStageprodBB8A31FE"
+              },
+              "/GET/spaces"
+            ]
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Default/spaces/GET/ApiPermission.SpaceFinderSpaceApi1F575F27.GET..spaces"
+      }
+    },
+    "SpaceApispacesGETApiPermissionTestSpaceFinderSpaceApi1F575F27GETspaces3FB21BD7": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "SpacesTableReadC88C4D14",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "SpaceApi1B373D2B"
+              },
+              "/test-invoke-stage/GET/spaces"
+            ]
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Default/spaces/GET/ApiPermission.Test.SpaceFinderSpaceApi1F575F27.GET..spaces"
+      }
+    },
+    "SpaceApispacesGET6C083CB2": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "GET",
+        "ResourceId": {
+          "Ref": "SpaceApispacesD5EE855F"
+        },
+        "RestApiId": {
+          "Ref": "SpaceApi1B373D2B"
+        },
+        "AuthorizationType": "COGNITO_USER_POOLS",
+        "AuthorizerId": {
+          "Ref": "SpaceUserAuthorizer401AE1AA"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "SpacesTableReadC88C4D14",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Default/spaces/GET/Resource"
+      }
+    },
+    "SpaceApispacesPUTApiPermissionSpaceFinderSpaceApi1F575F27PUTspacesA2F8330E": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "SpacesTableUpdate931099D2",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "SpaceApi1B373D2B"
+              },
+              "/",
+              {
+                "Ref": "SpaceApiDeploymentStageprodBB8A31FE"
+              },
+              "/PUT/spaces"
+            ]
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Default/spaces/PUT/ApiPermission.SpaceFinderSpaceApi1F575F27.PUT..spaces"
+      }
+    },
+    "SpaceApispacesPUTApiPermissionTestSpaceFinderSpaceApi1F575F27PUTspaces3CAA2E3B": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "SpacesTableUpdate931099D2",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "SpaceApi1B373D2B"
+              },
+              "/test-invoke-stage/PUT/spaces"
+            ]
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Default/spaces/PUT/ApiPermission.Test.SpaceFinderSpaceApi1F575F27.PUT..spaces"
+      }
+    },
+    "SpaceApispacesPUTD4F9CA05": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "PUT",
+        "ResourceId": {
+          "Ref": "SpaceApispacesD5EE855F"
+        },
+        "RestApiId": {
+          "Ref": "SpaceApi1B373D2B"
+        },
+        "AuthorizationType": "COGNITO_USER_POOLS",
+        "AuthorizerId": {
+          "Ref": "SpaceUserAuthorizer401AE1AA"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "SpacesTableUpdate931099D2",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Default/spaces/PUT/Resource"
+      }
+    },
+    "SpaceApispacesDELETEApiPermissionSpaceFinderSpaceApi1F575F27DELETEspaces0006BD5E": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "SpacesTableDeleteD71428D7",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "SpaceApi1B373D2B"
+              },
+              "/",
+              {
+                "Ref": "SpaceApiDeploymentStageprodBB8A31FE"
+              },
+              "/DELETE/spaces"
+            ]
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Default/spaces/DELETE/ApiPermission.SpaceFinderSpaceApi1F575F27.DELETE..spaces"
+      }
+    },
+    "SpaceApispacesDELETEApiPermissionTestSpaceFinderSpaceApi1F575F27DELETEspaces781BB602": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "SpacesTableDeleteD71428D7",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "SpaceApi1B373D2B"
+              },
+              "/test-invoke-stage/DELETE/spaces"
+            ]
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Default/spaces/DELETE/ApiPermission.Test.SpaceFinderSpaceApi1F575F27.DELETE..spaces"
+      }
+    },
+    "SpaceApispacesDELETEC413A31B": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "DELETE",
+        "ResourceId": {
+          "Ref": "SpaceApispacesD5EE855F"
+        },
+        "RestApiId": {
+          "Ref": "SpaceApi1B373D2B"
+        },
+        "AuthorizationType": "COGNITO_USER_POOLS",
+        "AuthorizerId": {
+          "Ref": "SpaceUserAuthorizer401AE1AA"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "SpacesTableDeleteD71428D7",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Default/spaces/DELETE/Resource"
+      }
+    },
+    "SpaceApireservationsB5924C00": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "SpaceApi1B373D2B",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "reservations",
+        "RestApiId": {
+          "Ref": "SpaceApi1B373D2B"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Default/reservations/Resource"
+      }
+    },
+    "SpaceApireservationsOPTIONSCA5D4517": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "OPTIONS",
+        "ResourceId": {
+          "Ref": "SpaceApireservationsB5924C00"
+        },
+        "RestApiId": {
+          "Ref": "SpaceApi1B373D2B"
+        },
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationResponses": [
+            {
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+              },
+              "StatusCode": "204"
+            }
+          ],
+          "RequestTemplates": {
+            "application/json": "{ statusCode: 200 }"
+          },
+          "Type": "MOCK"
+        },
+        "MethodResponses": [
+          {
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Methods": true
+            },
+            "StatusCode": "204"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Default/reservations/OPTIONS/Resource"
+      }
+    },
+    "SpaceApireservationsPOSTApiPermissionSpaceFinderSpaceApi1F575F27POSTreservationsFE93FB17": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ReservationsTableCreateDA6AD5A5",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "SpaceApi1B373D2B"
+              },
+              "/",
+              {
+                "Ref": "SpaceApiDeploymentStageprodBB8A31FE"
+              },
+              "/POST/reservations"
+            ]
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Default/reservations/POST/ApiPermission.SpaceFinderSpaceApi1F575F27.POST..reservations"
+      }
+    },
+    "SpaceApireservationsPOSTApiPermissionTestSpaceFinderSpaceApi1F575F27POSTreservations37429576": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ReservationsTableCreateDA6AD5A5",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "SpaceApi1B373D2B"
+              },
+              "/test-invoke-stage/POST/reservations"
+            ]
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Default/reservations/POST/ApiPermission.Test.SpaceFinderSpaceApi1F575F27.POST..reservations"
+      }
+    },
+    "SpaceApireservationsPOSTFA20A69F": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "ResourceId": {
+          "Ref": "SpaceApireservationsB5924C00"
+        },
+        "RestApiId": {
+          "Ref": "SpaceApi1B373D2B"
+        },
+        "AuthorizationType": "COGNITO_USER_POOLS",
+        "AuthorizerId": {
+          "Ref": "SpaceUserAuthorizer401AE1AA"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "ReservationsTableCreateDA6AD5A5",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Default/reservations/POST/Resource"
+      }
+    },
+    "SpaceApireservationsGETApiPermissionSpaceFinderSpaceApi1F575F27GETreservations6E4C72FB": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ReservationsTableReadDF878FF1",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "SpaceApi1B373D2B"
+              },
+              "/",
+              {
+                "Ref": "SpaceApiDeploymentStageprodBB8A31FE"
+              },
+              "/GET/reservations"
+            ]
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Default/reservations/GET/ApiPermission.SpaceFinderSpaceApi1F575F27.GET..reservations"
+      }
+    },
+    "SpaceApireservationsGETApiPermissionTestSpaceFinderSpaceApi1F575F27GETreservations60A30414": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ReservationsTableReadDF878FF1",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "SpaceApi1B373D2B"
+              },
+              "/test-invoke-stage/GET/reservations"
+            ]
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Default/reservations/GET/ApiPermission.Test.SpaceFinderSpaceApi1F575F27.GET..reservations"
+      }
+    },
+    "SpaceApireservationsGET1C010D4D": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "GET",
+        "ResourceId": {
+          "Ref": "SpaceApireservationsB5924C00"
+        },
+        "RestApiId": {
+          "Ref": "SpaceApi1B373D2B"
+        },
+        "AuthorizationType": "COGNITO_USER_POOLS",
+        "AuthorizerId": {
+          "Ref": "SpaceUserAuthorizer401AE1AA"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "ReservationsTableReadDF878FF1",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Default/reservations/GET/Resource"
+      }
+    },
+    "SpaceApireservationsPUTApiPermissionSpaceFinderSpaceApi1F575F27PUTreservationsBA1862E4": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ReservationsTableUpdate469C44E2",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "SpaceApi1B373D2B"
+              },
+              "/",
+              {
+                "Ref": "SpaceApiDeploymentStageprodBB8A31FE"
+              },
+              "/PUT/reservations"
+            ]
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Default/reservations/PUT/ApiPermission.SpaceFinderSpaceApi1F575F27.PUT..reservations"
+      }
+    },
+    "SpaceApireservationsPUTApiPermissionTestSpaceFinderSpaceApi1F575F27PUTreservations7B2EAF2D": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ReservationsTableUpdate469C44E2",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "SpaceApi1B373D2B"
+              },
+              "/test-invoke-stage/PUT/reservations"
+            ]
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Default/reservations/PUT/ApiPermission.Test.SpaceFinderSpaceApi1F575F27.PUT..reservations"
+      }
+    },
+    "SpaceApireservationsPUT6C758D78": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "PUT",
+        "ResourceId": {
+          "Ref": "SpaceApireservationsB5924C00"
+        },
+        "RestApiId": {
+          "Ref": "SpaceApi1B373D2B"
+        },
+        "AuthorizationType": "COGNITO_USER_POOLS",
+        "AuthorizerId": {
+          "Ref": "SpaceUserAuthorizer401AE1AA"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "ReservationsTableUpdate469C44E2",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Default/reservations/PUT/Resource"
+      }
+    },
+    "SpaceApireservationsDELETEApiPermissionSpaceFinderSpaceApi1F575F27DELETEreservationsD521580B": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ReservationsTableDeleteC5569EE8",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "SpaceApi1B373D2B"
+              },
+              "/",
+              {
+                "Ref": "SpaceApiDeploymentStageprodBB8A31FE"
+              },
+              "/DELETE/reservations"
+            ]
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Default/reservations/DELETE/ApiPermission.SpaceFinderSpaceApi1F575F27.DELETE..reservations"
+      }
+    },
+    "SpaceApireservationsDELETEApiPermissionTestSpaceFinderSpaceApi1F575F27DELETEreservations0862E7EA": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ReservationsTableDeleteC5569EE8",
+            "Arn"
+          ]
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "SpaceApi1B373D2B"
+              },
+              "/test-invoke-stage/DELETE/reservations"
+            ]
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Default/reservations/DELETE/ApiPermission.Test.SpaceFinderSpaceApi1F575F27.DELETE..reservations"
+      }
+    },
+    "SpaceApireservationsDELETE1A253DBD": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "DELETE",
+        "ResourceId": {
+          "Ref": "SpaceApireservationsB5924C00"
+        },
+        "RestApiId": {
+          "Ref": "SpaceApi1B373D2B"
+        },
+        "AuthorizationType": "COGNITO_USER_POOLS",
+        "AuthorizerId": {
+          "Ref": "SpaceUserAuthorizer401AE1AA"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "ReservationsTableDeleteC5569EE8",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceApi/Default/reservations/DELETE/Resource"
+      }
+    },
+    "SpacesTable8A997355": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "KeySchema": [
+          {
+            "AttributeName": "spaceId",
+            "KeyType": "HASH"
+          }
+        ],
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "spaceId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "location",
+            "AttributeType": "S"
+          }
+        ],
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "location",
+            "KeySchema": [
+              {
+                "AttributeName": "location",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "ProvisionedThroughput": {
+              "ReadCapacityUnits": 5,
+              "WriteCapacityUnits": 5
+            }
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": 5,
+          "WriteCapacityUnits": 5
+        },
+        "TableName": "SpacesTable"
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpacesTable/Resource"
+      }
+    },
+    "SpacesTableCreateServiceRoleE49CA3B4": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpacesTable-Create/ServiceRole/Resource"
+      }
+    },
+    "SpacesTableCreateServiceRoleDefaultPolicy308B2E77": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "SpacesTable8A997355",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "SpacesTable8A997355",
+                          "Arn"
+                        ]
+                      },
+                      "/index/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "SpacesTableCreateServiceRoleDefaultPolicy308B2E77",
+        "Roles": [
+          {
+            "Ref": "SpacesTableCreateServiceRoleE49CA3B4"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpacesTable-Create/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "SpacesTableCreate125CEC52": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          },
+          "S3Key": "36ec9737ea162c4c9de871d600959d6a17f681c446dc0f55ccdc64edf7f7c454.zip"
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "SpacesTableCreateServiceRoleE49CA3B4",
+            "Arn"
+          ]
+        },
+        "Environment": {
+          "Variables": {
+            "TABLE_NAME": "SpacesTable",
+            "PRIMARY_KEY": "spaceId",
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+          }
+        },
+        "FunctionName": "SpacesTable-Create",
+        "Handler": "index.handler",
+        "Runtime": "nodejs14.x"
+      },
+      "DependsOn": [
+        "SpacesTableCreateServiceRoleDefaultPolicy308B2E77",
+        "SpacesTableCreateServiceRoleE49CA3B4"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpacesTable-Create/Resource",
+        "aws:asset:path": "asset.36ec9737ea162c4c9de871d600959d6a17f681c446dc0f55ccdc64edf7f7c454",
+        "aws:asset:is-bundled": true,
+        "aws:asset:property": "Code"
+      }
+    },
+    "SpacesTableReadServiceRoleDC90AD04": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpacesTable-Read/ServiceRole/Resource"
+      }
+    },
+    "SpacesTableReadServiceRoleDefaultPolicyEAD1E3B1": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "dynamodb:BatchGetItem",
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator",
+                "dynamodb:Query",
+                "dynamodb:GetItem",
+                "dynamodb:Scan",
+                "dynamodb:ConditionCheckItem"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "SpacesTable8A997355",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "SpacesTable8A997355",
+                          "Arn"
+                        ]
+                      },
+                      "/index/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "SpacesTableReadServiceRoleDefaultPolicyEAD1E3B1",
+        "Roles": [
+          {
+            "Ref": "SpacesTableReadServiceRoleDC90AD04"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpacesTable-Read/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "SpacesTableReadC88C4D14": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          },
+          "S3Key": "8e92b379df1c796efebafe7f3004607c15c8f6fff79e78f506c11cfbfb382bea.zip"
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "SpacesTableReadServiceRoleDC90AD04",
+            "Arn"
+          ]
+        },
+        "Environment": {
+          "Variables": {
+            "TABLE_NAME": "SpacesTable",
+            "PRIMARY_KEY": "spaceId",
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+          }
+        },
+        "FunctionName": "SpacesTable-Read",
+        "Handler": "index.handler",
+        "Runtime": "nodejs14.x"
+      },
+      "DependsOn": [
+        "SpacesTableReadServiceRoleDefaultPolicyEAD1E3B1",
+        "SpacesTableReadServiceRoleDC90AD04"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpacesTable-Read/Resource",
+        "aws:asset:path": "asset.8e92b379df1c796efebafe7f3004607c15c8f6fff79e78f506c11cfbfb382bea",
+        "aws:asset:is-bundled": true,
+        "aws:asset:property": "Code"
+      }
+    },
+    "SpacesTableUpdateServiceRoleC28CF914": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpacesTable-Update/ServiceRole/Resource"
+      }
+    },
+    "SpacesTableUpdateServiceRoleDefaultPolicy36B2545A": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "SpacesTable8A997355",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "SpacesTable8A997355",
+                          "Arn"
+                        ]
+                      },
+                      "/index/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "SpacesTableUpdateServiceRoleDefaultPolicy36B2545A",
+        "Roles": [
+          {
+            "Ref": "SpacesTableUpdateServiceRoleC28CF914"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpacesTable-Update/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "SpacesTableUpdate931099D2": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          },
+          "S3Key": "a8875f9f8e1306d3a8ac5f36ef458b13b5adeeca3e0da78e7d5dc1cdc56e3258.zip"
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "SpacesTableUpdateServiceRoleC28CF914",
+            "Arn"
+          ]
+        },
+        "Environment": {
+          "Variables": {
+            "TABLE_NAME": "SpacesTable",
+            "PRIMARY_KEY": "spaceId",
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+          }
+        },
+        "FunctionName": "SpacesTable-Update",
+        "Handler": "index.handler",
+        "Runtime": "nodejs14.x"
+      },
+      "DependsOn": [
+        "SpacesTableUpdateServiceRoleDefaultPolicy36B2545A",
+        "SpacesTableUpdateServiceRoleC28CF914"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpacesTable-Update/Resource",
+        "aws:asset:path": "asset.a8875f9f8e1306d3a8ac5f36ef458b13b5adeeca3e0da78e7d5dc1cdc56e3258",
+        "aws:asset:is-bundled": true,
+        "aws:asset:property": "Code"
+      }
+    },
+    "SpacesTableDeleteServiceRoleE51C080F": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpacesTable-Delete/ServiceRole/Resource"
+      }
+    },
+    "SpacesTableDeleteServiceRoleDefaultPolicy036F0FB4": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "SpacesTable8A997355",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "SpacesTable8A997355",
+                          "Arn"
+                        ]
+                      },
+                      "/index/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "SpacesTableDeleteServiceRoleDefaultPolicy036F0FB4",
+        "Roles": [
+          {
+            "Ref": "SpacesTableDeleteServiceRoleE51C080F"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpacesTable-Delete/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "SpacesTableDeleteD71428D7": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          },
+          "S3Key": "07997e600edcb23be7ffe3110ec7b3c88f7074f26024915e915bade3475aa5da.zip"
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "SpacesTableDeleteServiceRoleE51C080F",
+            "Arn"
+          ]
+        },
+        "Environment": {
+          "Variables": {
+            "TABLE_NAME": "SpacesTable",
+            "PRIMARY_KEY": "spaceId",
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+          }
+        },
+        "FunctionName": "SpacesTable-Delete",
+        "Handler": "index.handler",
+        "Runtime": "nodejs14.x"
+      },
+      "DependsOn": [
+        "SpacesTableDeleteServiceRoleDefaultPolicy036F0FB4",
+        "SpacesTableDeleteServiceRoleE51C080F"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpacesTable-Delete/Resource",
+        "aws:asset:path": "asset.07997e600edcb23be7ffe3110ec7b3c88f7074f26024915e915bade3475aa5da",
+        "aws:asset:is-bundled": true,
+        "aws:asset:property": "Code"
+      }
+    },
+    "ReservationsTableD1629A9C": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "KeySchema": [
+          {
+            "AttributeName": "reservationId",
+            "KeyType": "HASH"
+          }
+        ],
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "reservationId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "user",
+            "AttributeType": "S"
+          }
+        ],
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "user",
+            "KeySchema": [
+              {
+                "AttributeName": "user",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "ProvisionedThroughput": {
+              "ReadCapacityUnits": 5,
+              "WriteCapacityUnits": 5
+            }
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": 5,
+          "WriteCapacityUnits": 5
+        },
+        "TableName": "ReservationsTable"
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/ReservationsTable/Resource"
+      }
+    },
+    "ReservationsTableCreateServiceRoleC82ED7E5": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/ReservationsTable-Create/ServiceRole/Resource"
+      }
+    },
+    "ReservationsTableCreateServiceRoleDefaultPolicy5EA2C139": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "ReservationsTableD1629A9C",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "ReservationsTableD1629A9C",
+                          "Arn"
+                        ]
+                      },
+                      "/index/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "ReservationsTableCreateServiceRoleDefaultPolicy5EA2C139",
+        "Roles": [
+          {
+            "Ref": "ReservationsTableCreateServiceRoleC82ED7E5"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/ReservationsTable-Create/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "ReservationsTableCreateDA6AD5A5": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          },
+          "S3Key": "495e7d1ad42d116db4756e73627c337413abef95471e7b3e509d719658fd2941.zip"
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "ReservationsTableCreateServiceRoleC82ED7E5",
+            "Arn"
+          ]
+        },
+        "Environment": {
+          "Variables": {
+            "TABLE_NAME": "ReservationsTable",
+            "PRIMARY_KEY": "reservationId",
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+          }
+        },
+        "FunctionName": "ReservationsTable-Create",
+        "Handler": "index.handler",
+        "Runtime": "nodejs14.x"
+      },
+      "DependsOn": [
+        "ReservationsTableCreateServiceRoleDefaultPolicy5EA2C139",
+        "ReservationsTableCreateServiceRoleC82ED7E5"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/ReservationsTable-Create/Resource",
+        "aws:asset:path": "asset.495e7d1ad42d116db4756e73627c337413abef95471e7b3e509d719658fd2941",
+        "aws:asset:is-bundled": true,
+        "aws:asset:property": "Code"
+      }
+    },
+    "ReservationsTableReadServiceRole5571AFE2": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/ReservationsTable-Read/ServiceRole/Resource"
+      }
+    },
+    "ReservationsTableReadServiceRoleDefaultPolicy2F2874D4": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "dynamodb:BatchGetItem",
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator",
+                "dynamodb:Query",
+                "dynamodb:GetItem",
+                "dynamodb:Scan",
+                "dynamodb:ConditionCheckItem"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "ReservationsTableD1629A9C",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "ReservationsTableD1629A9C",
+                          "Arn"
+                        ]
+                      },
+                      "/index/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "ReservationsTableReadServiceRoleDefaultPolicy2F2874D4",
+        "Roles": [
+          {
+            "Ref": "ReservationsTableReadServiceRole5571AFE2"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/ReservationsTable-Read/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "ReservationsTableReadDF878FF1": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          },
+          "S3Key": "7c4e9d448b2d16ca423a40a349205b596a47243c9d35ead94aefa886b5393ea9.zip"
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "ReservationsTableReadServiceRole5571AFE2",
+            "Arn"
+          ]
+        },
+        "Environment": {
+          "Variables": {
+            "TABLE_NAME": "ReservationsTable",
+            "PRIMARY_KEY": "reservationId",
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+          }
+        },
+        "FunctionName": "ReservationsTable-Read",
+        "Handler": "index.handler",
+        "Runtime": "nodejs14.x"
+      },
+      "DependsOn": [
+        "ReservationsTableReadServiceRoleDefaultPolicy2F2874D4",
+        "ReservationsTableReadServiceRole5571AFE2"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/ReservationsTable-Read/Resource",
+        "aws:asset:path": "asset.7c4e9d448b2d16ca423a40a349205b596a47243c9d35ead94aefa886b5393ea9",
+        "aws:asset:is-bundled": true,
+        "aws:asset:property": "Code"
+      }
+    },
+    "ReservationsTableUpdateServiceRole2CB05F09": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/ReservationsTable-Update/ServiceRole/Resource"
+      }
+    },
+    "ReservationsTableUpdateServiceRoleDefaultPolicyDC400F96": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "ReservationsTableD1629A9C",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "ReservationsTableD1629A9C",
+                          "Arn"
+                        ]
+                      },
+                      "/index/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "ReservationsTableUpdateServiceRoleDefaultPolicyDC400F96",
+        "Roles": [
+          {
+            "Ref": "ReservationsTableUpdateServiceRole2CB05F09"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/ReservationsTable-Update/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "ReservationsTableUpdate469C44E2": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          },
+          "S3Key": "a15cf85bf022ee31f59f4fdc2f30d6bac310579011c1f23de6d74c76d99e6027.zip"
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "ReservationsTableUpdateServiceRole2CB05F09",
+            "Arn"
+          ]
+        },
+        "Environment": {
+          "Variables": {
+            "TABLE_NAME": "ReservationsTable",
+            "PRIMARY_KEY": "reservationId",
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+          }
+        },
+        "FunctionName": "ReservationsTable-Update",
+        "Handler": "index.handler",
+        "Runtime": "nodejs14.x"
+      },
+      "DependsOn": [
+        "ReservationsTableUpdateServiceRoleDefaultPolicyDC400F96",
+        "ReservationsTableUpdateServiceRole2CB05F09"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/ReservationsTable-Update/Resource",
+        "aws:asset:path": "asset.a15cf85bf022ee31f59f4fdc2f30d6bac310579011c1f23de6d74c76d99e6027",
+        "aws:asset:is-bundled": true,
+        "aws:asset:property": "Code"
+      }
+    },
+    "ReservationsTableDeleteServiceRoleC14AA229": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/ReservationsTable-Delete/ServiceRole/Resource"
+      }
+    },
+    "ReservationsTableDeleteServiceRoleDefaultPolicy678F6C43": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "ReservationsTableD1629A9C",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "ReservationsTableD1629A9C",
+                          "Arn"
+                        ]
+                      },
+                      "/index/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "ReservationsTableDeleteServiceRoleDefaultPolicy678F6C43",
+        "Roles": [
+          {
+            "Ref": "ReservationsTableDeleteServiceRoleC14AA229"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/ReservationsTable-Delete/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "ReservationsTableDeleteC5569EE8": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          },
+          "S3Key": "df5845cdf8dd360e7553de140f471c89434a8a50d509dae0a54e39057b6bf159.zip"
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "ReservationsTableDeleteServiceRoleC14AA229",
+            "Arn"
+          ]
+        },
+        "Environment": {
+          "Variables": {
+            "TABLE_NAME": "ReservationsTable",
+            "PRIMARY_KEY": "reservationId",
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+          }
+        },
+        "FunctionName": "ReservationsTable-Delete",
+        "Handler": "index.handler",
+        "Runtime": "nodejs14.x"
+      },
+      "DependsOn": [
+        "ReservationsTableDeleteServiceRoleDefaultPolicy678F6C43",
+        "ReservationsTableDeleteServiceRoleC14AA229"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/ReservationsTable-Delete/Resource",
+        "aws:asset:path": "asset.df5845cdf8dd360e7553de140f471c89434a8a50d509dae0a54e39057b6bf159",
+        "aws:asset:is-bundled": true,
+        "aws:asset:property": "Code"
+      }
+    },
+    "spacesphotos2389D37E": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": {
+          "Fn::Join": [
+            "",
+            [
+              "spaces-photos-",
+              {
+                "Fn::Select": [
+                  4,
+                  {
+                    "Fn::Split": [
+                      "-",
+                      {
+                        "Fn::Select": [
+                          2,
+                          {
+                            "Fn::Split": [
+                              "/",
+                              {
+                                "Ref": "AWS::StackId"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          ]
+        },
+        "CorsConfiguration": {
+          "CorsRules": [
+            {
+              "AllowedHeaders": [
+                "*"
+              ],
+              "AllowedMethods": [
+                "HEAD",
+                "GET",
+                "PUT"
+              ],
+              "AllowedOrigins": [
+                "*"
+              ]
+            }
+          ]
+        }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/spaces-photos/Resource"
+      }
+    },
+    "profilephotosD546CD2A": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": {
+          "Fn::Join": [
+            "",
+            [
+              "profile-photos-",
+              {
+                "Fn::Select": [
+                  4,
+                  {
+                    "Fn::Split": [
+                      "-",
+                      {
+                        "Fn::Select": [
+                          2,
+                          {
+                            "Fn::Split": [
+                              "/",
+                              {
+                                "Ref": "AWS::StackId"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          ]
+        },
+        "CorsConfiguration": {
+          "CorsRules": [
+            {
+              "AllowedHeaders": [
+                "*"
+              ],
+              "AllowedMethods": [
+                "HEAD",
+                "GET",
+                "PUT"
+              ],
+              "AllowedOrigins": [
+                "*"
+              ]
+            }
+          ]
+        }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/profile-photos/Resource"
+      }
+    },
+    "SpaceUserPool6AB542DC": {
+      "Type": "AWS::Cognito::UserPool",
+      "Properties": {
+        "AccountRecoverySetting": {
+          "RecoveryMechanisms": [
+            {
+              "Name": "verified_phone_number",
+              "Priority": 1
+            },
+            {
+              "Name": "verified_email",
+              "Priority": 2
+            }
+          ]
+        },
+        "AdminCreateUserConfig": {
+          "AllowAdminCreateUserOnly": false
+        },
+        "AliasAttributes": [
+          "email"
+        ],
+        "AutoVerifiedAttributes": [
+          "email"
+        ],
+        "EmailVerificationMessage": "The verification code to your new account is {####}",
+        "EmailVerificationSubject": "Verify your new account",
+        "SmsVerificationMessage": "The verification code to your new account is {####}",
+        "UserPoolName": "SpaceUserPool",
+        "VerificationMessageTemplate": {
+          "DefaultEmailOption": "CONFIRM_WITH_CODE",
+          "EmailMessage": "The verification code to your new account is {####}",
+          "EmailSubject": "Verify your new account",
+          "SmsMessage": "The verification code to your new account is {####}"
+        }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceUserPool/Resource"
+      }
+    },
+    "SpaceUserPoolSpaceUserPoolclient4839E5E8": {
+      "Type": "AWS::Cognito::UserPoolClient",
+      "Properties": {
+        "UserPoolId": {
+          "Ref": "SpaceUserPool6AB542DC"
+        },
+        "AllowedOAuthFlows": [
+          "implicit",
+          "code"
+        ],
+        "AllowedOAuthFlowsUserPoolClient": true,
+        "AllowedOAuthScopes": [
+          "profile",
+          "phone",
+          "email",
+          "openid",
+          "aws.cognito.signin.user.admin"
+        ],
+        "CallbackURLs": [
+          "https://example.com"
+        ],
+        "ClientName": "SpaceUserPool-client",
+        "ExplicitAuthFlows": [
+          "ALLOW_USER_PASSWORD_AUTH",
+          "ALLOW_ADMIN_USER_PASSWORD_AUTH",
+          "ALLOW_CUSTOM_AUTH",
+          "ALLOW_USER_SRP_AUTH",
+          "ALLOW_REFRESH_TOKEN_AUTH"
+        ],
+        "GenerateSecret": false,
+        "SupportedIdentityProviders": [
+          "COGNITO"
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceUserPool/SpaceUserPool-client/Resource"
+      }
+    },
+    "SpaceUserAuthorizer401AE1AA": {
+      "Type": "AWS::ApiGateway::Authorizer",
+      "Properties": {
+        "Name": "SpaceUserAuthorizer",
+        "RestApiId": {
+          "Ref": "SpaceApi1B373D2B"
+        },
+        "Type": "COGNITO_USER_POOLS",
+        "IdentitySource": "method.request.header.Authorization",
+        "ProviderARNs": [
+          {
+            "Fn::GetAtt": [
+              "SpaceUserPool6AB542DC",
+              "Arn"
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceUserAuthorizer/Resource"
+      }
+    },
+    "SpaceFinderIdentityPool": {
+      "Type": "AWS::Cognito::IdentityPool",
+      "Properties": {
+        "AllowUnauthenticatedIdentities": true,
+        "CognitoIdentityProviders": [
+          {
+            "ClientId": {
+              "Ref": "SpaceUserPoolSpaceUserPoolclient4839E5E8"
+            },
+            "ProviderName": {
+              "Fn::GetAtt": [
+                "SpaceUserPool6AB542DC",
+                "ProviderName"
+              ]
+            }
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/SpaceFinderIdentityPool"
+      }
+    },
+    "CognitoDefaultAuthenticatedRoleC5D5C31E": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRoleWithWebIdentity",
+              "Condition": {
+                "StringEquals": {
+                  "cognito-identity.amazonaws.com:aud": {
+                    "Ref": "SpaceFinderIdentityPool"
+                  }
+                },
+                "ForAnyValue:StringLike": {
+                  "cognito-identity.amazonaws.com:amr": "authenticated"
+                }
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "cognito-identity.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/CognitoDefaultAuthenticatedRole/Resource"
+      }
+    },
+    "CognitoDefaultAuthenticatedRoleDefaultPolicy4C5EB799": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:PutObject",
+                "s3:PutObjectAcl"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "profilephotosD546CD2A",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "CognitoDefaultAuthenticatedRoleDefaultPolicy4C5EB799",
+        "Roles": [
+          {
+            "Ref": "CognitoDefaultAuthenticatedRoleC5D5C31E"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/CognitoDefaultAuthenticatedRole/DefaultPolicy/Resource"
+      }
+    },
+    "CognitoDefaultUnAuthenticatedRole6CA311FD": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRoleWithWebIdentity",
+              "Condition": {
+                "StringEquals": {
+                  "cognito-identity.amazonaws.com:aud": {
+                    "Ref": "SpaceFinderIdentityPool"
+                  }
+                },
+                "ForAnyValue:StringLike": {
+                  "cognito-identity.amazonaws.com:amr": "unauthenticated"
+                }
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "cognito-identity.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/CognitoDefaultUnAuthenticatedRole/Resource"
+      }
+    },
+    "CognitoAdminRole4C10FBA4": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRoleWithWebIdentity",
+              "Condition": {
+                "StringEquals": {
+                  "cognito-identity.amazonaws.com:aud": {
+                    "Ref": "SpaceFinderIdentityPool"
+                  }
+                },
+                "ForAnyValue:StringLike": {
+                  "cognito-identity.amazonaws.com:amr": "authenticated"
+                }
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "cognito-identity.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/CognitoAdminRole/Resource"
+      }
+    },
+    "CognitoAdminRoleDefaultPolicyBC6192E4": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:PutObject",
+                "s3:PutObjectAcl"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "spacesphotos2389D37E",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            },
+            {
+              "Action": [
+                "s3:PutObject",
+                "s3:PutObjectAcl"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "profilephotosD546CD2A",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "CognitoAdminRoleDefaultPolicyBC6192E4",
+        "Roles": [
+          {
+            "Ref": "CognitoAdminRole4C10FBA4"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/CognitoAdminRole/DefaultPolicy/Resource"
+      }
+    },
+    "RolesAttachment": {
+      "Type": "AWS::Cognito::IdentityPoolRoleAttachment",
+      "Properties": {
+        "IdentityPoolId": {
+          "Ref": "SpaceFinderIdentityPool"
+        },
+        "RoleMappings": {
+          "adminsMapping": {
+            "AmbiguousRoleResolution": "AuthenticatedRole",
+            "IdentityProvider": {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::GetAtt": [
+                      "SpaceUserPool6AB542DC",
+                      "ProviderName"
+                    ]
+                  },
+                  ":",
+                  {
+                    "Ref": "SpaceUserPoolSpaceUserPoolclient4839E5E8"
+                  }
+                ]
+              ]
+            },
+            "Type": "Token"
+          }
+        },
+        "Roles": {
+          "authenticated": {
+            "Fn::GetAtt": [
+              "CognitoDefaultAuthenticatedRoleC5D5C31E",
+              "Arn"
+            ]
+          },
+          "unauthenticated": {
+            "Fn::GetAtt": [
+              "CognitoDefaultUnAuthenticatedRole6CA311FD",
+              "Arn"
+            ]
+          }
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/RolesAttachment"
+      }
+    },
+    "admins": {
+      "Type": "AWS::Cognito::UserPoolGroup",
+      "Properties": {
+        "UserPoolId": {
+          "Ref": "SpaceUserPool6AB542DC"
+        },
+        "GroupName": "admins",
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "CognitoAdminRole4C10FBA4",
+            "Arn"
+          ]
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/admins"
+      }
+    },
+    "spaceappwebidBC88228C": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": {
+          "Fn::Join": [
+            "",
+            [
+              "space-app-web",
+              {
+                "Fn::Select": [
+                  4,
+                  {
+                    "Fn::Split": [
+                      "-",
+                      {
+                        "Fn::Select": [
+                          2,
+                          {
+                            "Fn::Split": [
+                              "/",
+                              {
+                                "Ref": "AWS::StackId"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          ]
+        },
+        "Tags": [
+          {
+            "Key": "aws-cdk:cr-owned:88e0f536",
+            "Value": "true"
+          }
+        ],
+        "WebsiteConfiguration": {
+          "IndexDocument": "index.html"
+        }
+      },
+      "UpdateReplacePolicy": "Retain",
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/space-app-web-id/Resource"
+      }
+    },
+    "spaceappwebidPolicyC98213F9": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "spaceappwebidBC88228C"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:GetObject",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "spaceappwebidBC88228C",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/space-app-web-id/Policy/Resource"
+      }
+    },
+    "spaceappwebiddeploymentAwsCliLayerF4C508A3": {
+      "Type": "AWS::Lambda::LayerVersion",
+      "Properties": {
+        "Content": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          },
+          "S3Key": "e9882ab123687399f934da0d45effe675ecc8ce13b40cb946f3e1d6141fe8d68.zip"
+        },
+        "Description": "/opt/awscli/aws"
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/space-app-web-id-deployment/AwsCliLayer/Resource",
+        "aws:asset:path": "asset.e9882ab123687399f934da0d45effe675ecc8ce13b40cb946f3e1d6141fe8d68.zip",
+        "aws:asset:is-bundled": false,
+        "aws:asset:property": "Content"
+      }
+    },
+    "spaceappwebiddeploymentCustomResource1B3D850D": {
+      "Type": "Custom::CDKBucketDeployment",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536",
+            "Arn"
+          ]
+        },
+        "SourceBucketNames": [
+          {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          }
+        ],
+        "SourceObjectKeys": [
+          "788a162f6c17ce835a6c1d9399b9b9fe91f5491819b61e412cf940aeb22b0d7c.zip"
+        ],
+        "DestinationBucketName": {
+          "Ref": "spaceappwebidBC88228C"
+        },
+        "Prune": true
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/space-app-web-id-deployment/CustomResource/Default"
+      }
+    },
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/Resource"
+      }
+    },
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::",
+                      {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::",
+                      {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject",
+                "s3:Abort*"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "spaceappwebidBC88228C",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "spaceappwebidBC88228C",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
+        "Roles": [
+          {
+            "Ref": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          },
+          "S3Key": "e3d9996b6fafcc7da88312672e15e3cc925b02cffc6f01a615d81f22303e3ae0.zip"
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
+            "Arn"
+          ]
+        },
+        "Handler": "index.handler",
+        "Layers": [
+          {
+            "Ref": "spaceappwebiddeploymentAwsCliLayerF4C508A3"
+          }
+        ],
+        "Runtime": "python3.7",
+        "Timeout": 900
+      },
+      "DependsOn": [
+        "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
+        "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/Resource",
+        "aws:asset:path": "asset.e3d9996b6fafcc7da88312672e15e3cc925b02cffc6f01a615d81f22303e3ae0",
+        "aws:asset:is-bundled": false,
+        "aws:asset:property": "Code"
+      }
+    },
+    "spaceappwebdistributionCFDistribution43751980": {
+      "Type": "AWS::CloudFront::Distribution",
+      "Properties": {
+        "DistributionConfig": {
+          "DefaultCacheBehavior": {
+            "AllowedMethods": [
+              "GET",
+              "HEAD"
+            ],
+            "CachedMethods": [
+              "GET",
+              "HEAD"
+            ],
+            "Compress": true,
+            "ForwardedValues": {
+              "Cookies": {
+                "Forward": "none"
+              },
+              "QueryString": false
+            },
+            "TargetOriginId": "origin1",
+            "ViewerProtocolPolicy": "redirect-to-https"
+          },
+          "DefaultRootObject": "index.html",
+          "Enabled": true,
+          "HttpVersion": "http2",
+          "IPV6Enabled": true,
+          "Origins": [
+            {
+              "ConnectionAttempts": 3,
+              "ConnectionTimeout": 10,
+              "DomainName": {
+                "Fn::GetAtt": [
+                  "spaceappwebidBC88228C",
+                  "RegionalDomainName"
+                ]
+              },
+              "Id": "origin1",
+              "S3OriginConfig": {}
+            }
+          ],
+          "PriceClass": "PriceClass_100",
+          "ViewerCertificate": {
+            "CloudFrontDefaultCertificate": true
+          }
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/space-app-web-distribution/CFDistribution"
+      }
+    },
+    "CDKMetadata": {
+      "Type": "AWS::CDK::Metadata",
+      "Properties": {
+        "Analytics": "v2:deflate64:H4sIAAAAAAAA/22S227bMAyGn6X3ira0w+5dFx0K7FC0O1wGssSmTGTR0GGBZ/jdR1lxbHS74sffEin/5LX8IN9fqVPYaHPcWGzk8ByVPgqWdoPqcK8inFQvhycIsepQ1C9uhZXWlFwUd9BZ6ltgZHWVcbU9ZK0AX6XkNdyqsCTnmoW/QHwlk6WZaO8w0o8A/pHIhiqx7PEP+OkBl2wUqFp+J9lSMMdHsqj7nBYahVVtY5QcsgS+xRCQXD5wn5yOZ/6sevA/wU/fntHtLURaTswwCtM71ZJh176rpvSdYO6zc2TgEOTXKVwKhBv2NgSIQVY5CHMxTN4mfYS4ODjyaTkUdXKtYG51phKWX13no9DFPjnMBuYjF56htnie3b/Kg2HA2M+X13l2uYq8Ma/tm/ufPKWO21tK5sUT/9lQZ77P/AuaOwzRY5Nmz9f5OGblW4pdisuWTFblNeKBzP7aPKkdL6u2KKtT4FdPwxN1CpHa/24Yc03OYBlhnpA8hHe/tx/l9kZurw4BceN5qbEF+VTiX7nMs1EnAwAA"
+      },
+      "Metadata": {
+        "aws:cdk:path": "Space-Finder/CDKMetadata/Default"
+      },
+      "Condition": "CDKMetadataAvailable"
+    }
+  },
+  "Outputs": {
+    "SpaceApiEndpointDA7E4050": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://",
+            {
+              "Ref": "SpaceApi1B373D2B"
+            },
+            ".execute-api.",
+            {
+              "Ref": "AWS::Region"
+            },
+            ".",
+            {
+              "Ref": "AWS::URLSuffix"
+            },
+            "/",
+            {
+              "Ref": "SpaceApiDeploymentStageprodBB8A31FE"
+            },
+            "/"
+          ]
+        ]
+      }
+    },
+    "spacesphotosbucketname": {
+      "Value": {
+        "Ref": "spacesphotos2389D37E"
+      }
+    },
+    "profilephotosbucketname": {
+      "Value": {
+        "Ref": "profilephotosD546CD2A"
+      }
+    },
+    "UserPoolId": {
+      "Value": {
+        "Ref": "SpaceUserPool6AB542DC"
+      }
+    },
+    "UserPoolClientId": {
+      "Value": {
+        "Ref": "SpaceUserPoolSpaceUserPoolclient4839E5E8"
+      }
+    },
+    "IdentityPoolId": {
+      "Value": {
+        "Ref": "SpaceFinderIdentityPool"
+      }
+    },
+    "spaceFinderWebAppS3Url": {
+      "Value": {
+        "Fn::GetAtt": [
+          "spaceappwebidBC88228C",
+          "WebsiteURL"
+        ]
+      }
+    },
+    "spaceFinderWebAppCloudFrontUrl": {
+      "Value": {
+        "Fn::GetAtt": [
+          "spaceappwebdistributionCFDistribution43751980",
+          "DomainName"
+        ]
+      }
+    }
+  },
+  "Conditions": {
+    "CDKMetadataAvailable": {
+      "Fn::Or": [
+        {
+          "Fn::Or": [
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "af-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-east-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-northeast-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-northeast-2"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-southeast-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-southeast-2"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ca-central-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "cn-north-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "cn-northwest-1"
+              ]
+            }
+          ]
+        },
+        {
+          "Fn::Or": [
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-central-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-north-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-west-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-west-2"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-west-3"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "me-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "sa-east-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-east-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-east-2"
+              ]
+            }
+          ]
+        },
+        {
+          "Fn::Or": [
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-west-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-west-2"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
+      ]
+    }
+  }
+}

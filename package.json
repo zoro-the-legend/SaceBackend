@@ -1,0 +1,36 @@
+{
+  "name": "space-finder-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Suraj177/space-finder-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Suraj177/space-finder-backend/issues"
+  },
+  "homepage": "https://github.com/Suraj177/space-finder-backend#readme",
+  "devDependencies": {
+    "aws-cdk": "^2.4.0",
+    "aws-cdk-lib": "^2.4.0",
+    "constructs": "^10.0.28",
+    "esbuild": "^0.14.10",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.4"
+  },
+  "dependencies": {
+    "@aws-amplify/auth": "^4.3.20",
+    "@types/aws-lambda": "^8.10.89",
+    "@types/uuid": "^8.3.4",
+    "aws-amplify": "^4.3.12",
+    "aws-sdk": "^2.1053.0",
+    "uuid": "^8.3.2"
+  }
+}

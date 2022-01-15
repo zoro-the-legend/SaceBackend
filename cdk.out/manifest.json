@@ -1,0 +1,610 @@
+{
+  "version": "15.0.0",
+  "artifacts": {
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    },
+    "Space-Finder.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "Space-Finder.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "Space-Finder": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "Space-Finder.template.json",
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/8e2c56924381b7e30e48ef1e1ac2f37a6abca6638c9ae2ce7015ab3752bb8292.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "Space-Finder.assets"
+        ],
+        "stackName": "SpaceFinder"
+      },
+      "dependencies": [
+        "Space-Finder.assets"
+      ],
+      "metadata": {
+        "/Space-Finder/SpaceApi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApi1B373D2B"
+          }
+        ],
+        "/Space-Finder/SpaceApi/CloudWatchRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApiCloudWatchRole2811DDE0"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Account": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApiAccount1ADAEF20"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApiDeploymentA2B9E765dc771601322e6c60bc41b5d9d02c6a36"
+          }
+        ],
+        "/Space-Finder/SpaceApi/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApiDeploymentStageprodBB8A31FE"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApiEndpointDA7E4050"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Default/spaces/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApispacesD5EE855F"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Default/spaces/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApispacesOPTIONS8D15CDB5"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Default/spaces/POST/ApiPermission.SpaceFinderSpaceApi1F575F27.POST..spaces": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApispacesPOSTApiPermissionSpaceFinderSpaceApi1F575F27POSTspaces96018685"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Default/spaces/POST/ApiPermission.Test.SpaceFinderSpaceApi1F575F27.POST..spaces": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApispacesPOSTApiPermissionTestSpaceFinderSpaceApi1F575F27POSTspacesF5C0EB30"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Default/spaces/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApispacesPOST1DDB27B3"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Default/spaces/GET/ApiPermission.SpaceFinderSpaceApi1F575F27.GET..spaces": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApispacesGETApiPermissionSpaceFinderSpaceApi1F575F27GETspacesE64E6796"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Default/spaces/GET/ApiPermission.Test.SpaceFinderSpaceApi1F575F27.GET..spaces": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApispacesGETApiPermissionTestSpaceFinderSpaceApi1F575F27GETspaces3FB21BD7"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Default/spaces/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApispacesGET6C083CB2"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Default/spaces/PUT/ApiPermission.SpaceFinderSpaceApi1F575F27.PUT..spaces": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApispacesPUTApiPermissionSpaceFinderSpaceApi1F575F27PUTspacesA2F8330E"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Default/spaces/PUT/ApiPermission.Test.SpaceFinderSpaceApi1F575F27.PUT..spaces": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApispacesPUTApiPermissionTestSpaceFinderSpaceApi1F575F27PUTspaces3CAA2E3B"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Default/spaces/PUT/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApispacesPUTD4F9CA05"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Default/spaces/DELETE/ApiPermission.SpaceFinderSpaceApi1F575F27.DELETE..spaces": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApispacesDELETEApiPermissionSpaceFinderSpaceApi1F575F27DELETEspaces0006BD5E"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Default/spaces/DELETE/ApiPermission.Test.SpaceFinderSpaceApi1F575F27.DELETE..spaces": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApispacesDELETEApiPermissionTestSpaceFinderSpaceApi1F575F27DELETEspaces781BB602"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Default/spaces/DELETE/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApispacesDELETEC413A31B"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Default/reservations/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApireservationsB5924C00"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Default/reservations/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApireservationsOPTIONSCA5D4517"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Default/reservations/POST/ApiPermission.SpaceFinderSpaceApi1F575F27.POST..reservations": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApireservationsPOSTApiPermissionSpaceFinderSpaceApi1F575F27POSTreservationsFE93FB17"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Default/reservations/POST/ApiPermission.Test.SpaceFinderSpaceApi1F575F27.POST..reservations": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApireservationsPOSTApiPermissionTestSpaceFinderSpaceApi1F575F27POSTreservations37429576"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Default/reservations/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApireservationsPOSTFA20A69F"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Default/reservations/GET/ApiPermission.SpaceFinderSpaceApi1F575F27.GET..reservations": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApireservationsGETApiPermissionSpaceFinderSpaceApi1F575F27GETreservations6E4C72FB"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Default/reservations/GET/ApiPermission.Test.SpaceFinderSpaceApi1F575F27.GET..reservations": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApireservationsGETApiPermissionTestSpaceFinderSpaceApi1F575F27GETreservations60A30414"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Default/reservations/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApireservationsGET1C010D4D"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Default/reservations/PUT/ApiPermission.SpaceFinderSpaceApi1F575F27.PUT..reservations": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApireservationsPUTApiPermissionSpaceFinderSpaceApi1F575F27PUTreservationsBA1862E4"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Default/reservations/PUT/ApiPermission.Test.SpaceFinderSpaceApi1F575F27.PUT..reservations": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApireservationsPUTApiPermissionTestSpaceFinderSpaceApi1F575F27PUTreservations7B2EAF2D"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Default/reservations/PUT/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApireservationsPUT6C758D78"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Default/reservations/DELETE/ApiPermission.SpaceFinderSpaceApi1F575F27.DELETE..reservations": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApireservationsDELETEApiPermissionSpaceFinderSpaceApi1F575F27DELETEreservationsD521580B"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Default/reservations/DELETE/ApiPermission.Test.SpaceFinderSpaceApi1F575F27.DELETE..reservations": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApireservationsDELETEApiPermissionTestSpaceFinderSpaceApi1F575F27DELETEreservations0862E7EA"
+          }
+        ],
+        "/Space-Finder/SpaceApi/Default/reservations/DELETE/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceApireservationsDELETE1A253DBD"
+          }
+        ],
+        "/Space-Finder/SpacesTable": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "SpacesTable8A997355"
+            }
+          }
+        ],
+        "/Space-Finder/SpacesTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpacesTable8A997355"
+          }
+        ],
+        "/Space-Finder/SpacesTable-Create/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpacesTableCreateServiceRoleE49CA3B4"
+          }
+        ],
+        "/Space-Finder/SpacesTable-Create/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpacesTableCreateServiceRoleDefaultPolicy308B2E77"
+          }
+        ],
+        "/Space-Finder/SpacesTable-Create/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpacesTableCreate125CEC52"
+          }
+        ],
+        "/Space-Finder/SpacesTable-Read/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpacesTableReadServiceRoleDC90AD04"
+          }
+        ],
+        "/Space-Finder/SpacesTable-Read/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpacesTableReadServiceRoleDefaultPolicyEAD1E3B1"
+          }
+        ],
+        "/Space-Finder/SpacesTable-Read/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpacesTableReadC88C4D14"
+          }
+        ],
+        "/Space-Finder/SpacesTable-Update/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpacesTableUpdateServiceRoleC28CF914"
+          }
+        ],
+        "/Space-Finder/SpacesTable-Update/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpacesTableUpdateServiceRoleDefaultPolicy36B2545A"
+          }
+        ],
+        "/Space-Finder/SpacesTable-Update/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpacesTableUpdate931099D2"
+          }
+        ],
+        "/Space-Finder/SpacesTable-Delete/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpacesTableDeleteServiceRoleE51C080F"
+          }
+        ],
+        "/Space-Finder/SpacesTable-Delete/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpacesTableDeleteServiceRoleDefaultPolicy036F0FB4"
+          }
+        ],
+        "/Space-Finder/SpacesTable-Delete/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpacesTableDeleteD71428D7"
+          }
+        ],
+        "/Space-Finder/ReservationsTable": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "ReservationsTableD1629A9C"
+            }
+          }
+        ],
+        "/Space-Finder/ReservationsTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReservationsTableD1629A9C"
+          }
+        ],
+        "/Space-Finder/ReservationsTable-Create/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReservationsTableCreateServiceRoleC82ED7E5"
+          }
+        ],
+        "/Space-Finder/ReservationsTable-Create/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReservationsTableCreateServiceRoleDefaultPolicy5EA2C139"
+          }
+        ],
+        "/Space-Finder/ReservationsTable-Create/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReservationsTableCreateDA6AD5A5"
+          }
+        ],
+        "/Space-Finder/ReservationsTable-Read/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReservationsTableReadServiceRole5571AFE2"
+          }
+        ],
+        "/Space-Finder/ReservationsTable-Read/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReservationsTableReadServiceRoleDefaultPolicy2F2874D4"
+          }
+        ],
+        "/Space-Finder/ReservationsTable-Read/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReservationsTableReadDF878FF1"
+          }
+        ],
+        "/Space-Finder/ReservationsTable-Update/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReservationsTableUpdateServiceRole2CB05F09"
+          }
+        ],
+        "/Space-Finder/ReservationsTable-Update/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReservationsTableUpdateServiceRoleDefaultPolicyDC400F96"
+          }
+        ],
+        "/Space-Finder/ReservationsTable-Update/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReservationsTableUpdate469C44E2"
+          }
+        ],
+        "/Space-Finder/ReservationsTable-Delete/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReservationsTableDeleteServiceRoleC14AA229"
+          }
+        ],
+        "/Space-Finder/ReservationsTable-Delete/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReservationsTableDeleteServiceRoleDefaultPolicy678F6C43"
+          }
+        ],
+        "/Space-Finder/ReservationsTable-Delete/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ReservationsTableDeleteC5569EE8"
+          }
+        ],
+        "/Space-Finder/spaces-photos/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "spacesphotos2389D37E"
+          }
+        ],
+        "/Space-Finder/spaces-photos-bucket-name": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "spacesphotosbucketname"
+          }
+        ],
+        "/Space-Finder/profile-photos/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "profilephotosD546CD2A"
+          }
+        ],
+        "/Space-Finder/profile-photos-bucket-name": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "profilephotosbucketname"
+          }
+        ],
+        "/Space-Finder/SpaceUserPool/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceUserPool6AB542DC"
+          }
+        ],
+        "/Space-Finder/SpaceUserPool/SpaceUserPool-client/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceUserPoolSpaceUserPoolclient4839E5E8"
+          }
+        ],
+        "/Space-Finder/UserPoolId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPoolId"
+          }
+        ],
+        "/Space-Finder/UserPoolClientId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPoolClientId"
+          }
+        ],
+        "/Space-Finder/SpaceUserAuthorizer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceUserAuthorizer401AE1AA"
+          }
+        ],
+        "/Space-Finder/SpaceFinderIdentityPool": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpaceFinderIdentityPool"
+          }
+        ],
+        "/Space-Finder/IdentityPoolId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "IdentityPoolId"
+          }
+        ],
+        "/Space-Finder/CognitoDefaultAuthenticatedRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CognitoDefaultAuthenticatedRoleC5D5C31E"
+          }
+        ],
+        "/Space-Finder/CognitoDefaultAuthenticatedRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CognitoDefaultAuthenticatedRoleDefaultPolicy4C5EB799"
+          }
+        ],
+        "/Space-Finder/CognitoDefaultUnAuthenticatedRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CognitoDefaultUnAuthenticatedRole6CA311FD"
+          }
+        ],
+        "/Space-Finder/CognitoAdminRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CognitoAdminRole4C10FBA4"
+          }
+        ],
+        "/Space-Finder/CognitoAdminRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CognitoAdminRoleDefaultPolicyBC6192E4"
+          }
+        ],
+        "/Space-Finder/RolesAttachment": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RolesAttachment"
+          }
+        ],
+        "/Space-Finder/admins": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "admins"
+          }
+        ],
+        "/Space-Finder/space-app-web-id/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "spaceappwebidBC88228C"
+          }
+        ],
+        "/Space-Finder/space-app-web-id/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "spaceappwebidPolicyC98213F9"
+          }
+        ],
+        "/Space-Finder/space-app-web-id-deployment/AwsCliLayer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "spaceappwebiddeploymentAwsCliLayerF4C508A3"
+          }
+        ],
+        "/Space-Finder/space-app-web-id-deployment/CustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "spaceappwebiddeploymentCustomResource1B3D850D"
+          }
+        ],
+        "/Space-Finder/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265"
+          }
+        ],
+        "/Space-Finder/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF"
+          }
+        ],
+        "/Space-Finder/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536"
+          }
+        ],
+        "/Space-Finder/spaceFinderWebAppS3Url": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "spaceFinderWebAppS3Url"
+          }
+        ],
+        "/Space-Finder/space-app-web-distribution/CFDistribution": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "spaceappwebdistributionCFDistribution43751980"
+          }
+        ],
+        "/Space-Finder/spaceFinderWebAppCloudFrontUrl": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "spaceFinderWebAppCloudFrontUrl"
+          }
+        ],
+        "/Space-Finder/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/Space-Finder/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/Space-Finder/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/Space-Finder/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "Space-Finder"
+    }
+  }
+}
